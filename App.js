@@ -4,6 +4,8 @@ import { StatusBar } from 'expo-status-bar';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 
+import LoginScreen from './app/screen/auth/LoginScreen';
+
 SplashScreen.preventAutoHideAsync();
 
 export default function App() {
@@ -25,7 +27,7 @@ export default function App() {
 
   return (
     <View style={styles.container} onLayout={onLayoutRootView}>
-      <Text>Open up App.js to start working on your app!</Text>
+      <LoginScreen />
       <StatusBar style="auto" />
     </View>
   );
@@ -35,7 +37,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    paddingTop: 25,
   },
 });
