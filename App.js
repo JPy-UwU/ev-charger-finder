@@ -1,18 +1,19 @@
-import { useCallback } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { StatusBar } from 'expo-status-bar';
-import { useFonts } from 'expo-font';
-import * as SplashScreen from 'expo-splash-screen';
+import { useCallback } from "react";
+import { StyleSheet, Text, View } from "react-native";
+import { StatusBar } from "expo-status-bar";
+import { useFonts } from "expo-font";
+import * as SplashScreen from "expo-splash-screen";
+import { ClerkProvider, SignedIn, SignedOut } from "@clerk/clerk-expo";
 
-import LoginScreen from './app/screen/auth/LoginScreen';
+import LoginScreen from "./app/screen/auth/LoginScreen";
 
 SplashScreen.preventAutoHideAsync();
 
 export default function App() {
   const [fontsLoaded, fontError] = useFonts({
-    'Outfit': require('./assets/fonts/Outfit-Regular.ttf'),
-    'Outfit-SemiBold': require('./assets/fonts/Outfit-SemiBold.ttf'),
-    'Outfit-Bold': require('./assets/fonts/Outfit-Bold.ttf'),
+    Outfit: require("./assets/fonts/Outfit-Regular.ttf"),
+    "Outfit-SemiBold": require("./assets/fonts/Outfit-SemiBold.ttf"),
+    "Outfit-Bold": require("./assets/fonts/Outfit-Bold.ttf"),
   });
 
   const onLayoutRootView = useCallback(async () => {
@@ -26,17 +27,29 @@ export default function App() {
   }
 
   return (
-    <View style={styles.container} onLayout={onLayoutRootView}>
-      <LoginScreen />
-      <StatusBar style="auto" />
-    </View>
+    <ClerkProvider
+      publishableKey={
+        "pk_test_ZXhjaXRpbmctbWFnZ290LTgxLmNsZXJrLmFjY291bnRzLmRldiQ"
+      }
+    >
+      <View style={styles.container} onLayout={onLayoutRootView}>
+        <SignedIn>
+          <Text>You are Signed in</Text>
+        </SignedIn>
+        <SignedOut>
+          <LoginScreen />
+        </SignedOut>
+
+        <StatusBar style="auto" />
+      </View>
+    </ClerkProvider>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     paddingTop: 25,
   },
 });
