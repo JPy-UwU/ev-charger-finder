@@ -1,5 +1,7 @@
-import { View, Text, Image, StyleSheet } from 'react-native'
+import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native'
 import React from 'react'
+
+import Colors from '../../../utils/Colors';
 
 export default function LoginScreen() {
   return (
@@ -20,6 +22,21 @@ export default function LoginScreen() {
       <View style={{padding: 20}}>
         <Text style={styles.heading}>Your Ultimate EV Charging Station Finder App</Text>
         <Text style={styles.desc}>Find EV Charger near you, Plan trip and so much more in just one click</Text>
+        <TouchableOpacity 
+          style={styles.button}
+          onPress={() => {console.log("Login")}}  
+        >
+          <Text
+            style={{
+              color: Colors.WHITE,
+              textAlign: "center",
+              fontSize: 17,
+              fontFamily: "Outfit",
+            }}
+          >
+            Login
+          </Text>
+        </TouchableOpacity>
       </View>
     </View>
   )
@@ -48,5 +65,13 @@ const styles = StyleSheet.create({
     fontFamily: "Outfit",
     marginTop: 15,
     textAlign: "center",
-  }
+    color: Colors.GRAY,
+  },
+  button: {
+    backgroundColor: Colors.PRIMARY,
+    padding: 16,
+    display: "flex",
+    borderRadius: 99,
+    marginTop: 20,
+  },
 })
