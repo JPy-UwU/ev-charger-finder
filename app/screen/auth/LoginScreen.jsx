@@ -14,7 +14,7 @@ export default function LoginScreen() {
         style={styles.logoImage}
       />
       <Image 
-        source={require("../../../assets/images/logo-bg.png")}
+        source={require("../../../assets/images/bg.jpg")}
         style={styles.bgImage}
       />
       <View style={{padding: 20}}>
@@ -27,9 +27,9 @@ export default function LoginScreen() {
 
 const styles = StyleSheet.create({
   logoImage: {
-    width: 200,
+    width: "100%",
     height: 40,
-    objectFit: "contain",
+    objectFit: "cover",
   },
   bgImage: {
     width: "100%",
@@ -38,8 +38,8 @@ const styles = StyleSheet.create({
     objectFit: "cover",
   },
   heading: {
-    fintSize: 25,
-    fontFamily: "Outfit-bold",
+    fontSize: 25,
+    fontFamily: "Outfit-Bold",
     textAlign: "center",
     marginTop: 20,
   },
