@@ -11,8 +11,18 @@ export default function LoginScreen() {
   useWarmUpBrowser();
   const { startOAuthFlow } = useOAuth({ strategy: "oauth_google" });
 
-  const onPress = () => {
-    
+  const onPress = async () => {
+    try {
+      const { createdSessionId, signIn, signUp, setActive } = await startOAuthFlow();
+
+      if (createdSessionId) {
+        setActive({ sessionId: createdSessionId });
+      } else {
+        // TODO: Handle sign in or sign up
+      }
+    } catch (error) {
+      console.log("OAUTH ERROR", error);
+    }
   }
 
   return (

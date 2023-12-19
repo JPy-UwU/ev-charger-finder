@@ -4,6 +4,7 @@ import { StatusBar } from "expo-status-bar";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { ClerkProvider, SignedIn, SignedOut } from "@clerk/clerk-expo";
+import * as SecureStore from "expo-secure-store";
 
 import LoginScreen from "./app/screen/auth/LoginScreen";
 
@@ -26,8 +27,27 @@ export default function App() {
     return null;
   }
 
+ 
+const tokenCache = {
+  async getToken(key) {
+    try {
+      return SecureStore.getItemAsync(key);
+    } catch (err) {
+      return null;
+    }
+  },
+  async saveToken(key, value) {
+    try {
+      return SecureStore.setItemAsync(key, value);
+    } catch (err) {
+      return;
+    }
+  },
+};
+
   return (
     <ClerkProvider
+      tokenCache={tokenCache}
       publishableKey={
         "pk_test_ZXhjaXRpbmctbWFnZ290LTgxLmNsZXJrLmFjY291bnRzLmRldiQ"
       }
