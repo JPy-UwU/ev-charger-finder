@@ -46,7 +46,7 @@ export default function LoginScreen() {
         <Text style={styles.desc}>Find EV Charger near you, Plan trip and so much more in just one click</Text>
         <TouchableOpacity 
           style={styles.button}
-          onPress={() => {console.log("Login")}}  
+          onPress={() => {onPress()}}  
         >
           <Text
             style={{
