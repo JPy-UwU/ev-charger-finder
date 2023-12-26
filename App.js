@@ -5,18 +5,19 @@ import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { ClerkProvider, SignedIn, SignedOut } from "@clerk/clerk-expo";
 import * as SecureStore from "expo-secure-store";
-import * as Location from 'expo-location';
+import * as Location from "expo-location";
 
 import LoginScreen from "./app/screen/auth/LoginScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import TabNavigation from "./app/navigation/TabNavigation";
+import { UserLocationContext } from "./context/UserLocationContext";
 
 SplashScreen.preventAutoHideAsync();
 
 export default function App() {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
-  
+
   const [fontsLoaded, fontError] = useFonts({
     Outfit: require("./assets/fonts/Outfit-Regular.ttf"),
     "Outfit-SemiBold": require("./assets/fonts/Outfit-SemiBold.ttf"),
@@ -25,19 +26,18 @@ export default function App() {
 
   useEffect(() => {
     (async () => {
-      
       let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        setErrorMsg('Permission to access location was denied');
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
         return;
       }
 
       let location = await Location.getCurrentPositionAsync({});
-      setLocation(location);
+      setLocation(location.coords);
     })();
   }, []);
 
-  let text = 'Waiting..';
+  let text = "Waiting..";
   if (errorMsg) {
     text = errorMsg;
   } else if (location) {
@@ -54,23 +54,22 @@ export default function App() {
     return null;
   }
 
- 
-const tokenCache = {
-  async getToken(key) {
-    try {
-      return SecureStore.getItemAsync(key);
-    } catch (err) {
-      return null;
-    }
-  },
-  async saveToken(key, value) {
-    try {
-      return SecureStore.setItemAsync(key, value);
-    } catch (err) {
-      return;
-    }
-  },
-};
+  const tokenCache = {
+    async getToken(key) {
+      try {
+        return SecureStore.getItemAsync(key);
+      } catch (err) {
+        return null;
+      }
+    },
+    async saveToken(key, value) {
+      try {
+        return SecureStore.setItemAsync(key, value);
+      } catch (err) {
+        return;
+      }
+    },
+  };
 
   return (
     <ClerkProvider
@@ -79,18 +78,20 @@ const tokenCache = {
         "pk_test_ZXhjaXRpbmctbWFnZ290LTgxLmNsZXJrLmFjY291bnRzLmRldiQ"
       }
     >
-      <View style={styles.container} onLayout={onLayoutRootView}>
-        <SignedIn>
-          <NavigationContainer>
-            <TabNavigation />
-          </NavigationContainer>
-        </SignedIn>
-        <SignedOut>
-          <LoginScreen />
-        </SignedOut>
+      <UserLocationContext.Provider value={{ location, setLocation }}>
+        <View style={styles.container} onLayout={onLayoutRootView}>
+          <SignedIn>
+            <NavigationContainer>
+              <TabNavigation />
+            </NavigationContainer>
+          </SignedIn>
+          <SignedOut>
+            <LoginScreen />
+          </SignedOut>
 
-        <StatusBar style="auto" />
-      </View>
+          <StatusBar style="auto" />
+        </View>
+      </UserLocationContext.Provider>
     </ClerkProvider>
   );
 }
